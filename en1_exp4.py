@@ -92,3 +92,5 @@ ax.set_ylabel('temperatuur $T$ ($^{\circ}C$)')
 
 fig.show()
 # fig.savefig('plot.pdf')
+print(popt)
+print(np.diagonal(pcov))
