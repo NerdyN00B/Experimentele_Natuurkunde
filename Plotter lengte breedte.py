@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Spyder Editor
-
-This is a temporary script file.
+code by Sam Lamboo (s2653346)
 """
 
 import numpy as np
