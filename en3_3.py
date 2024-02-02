@@ -54,9 +54,9 @@ ax2.set_xlabel('Frequency $f$ [Hz]')
 ax2.set_ylabel('wavelength $\\lambda$ [m]')
 ax2.ticklabel_format(axis='both', scilimits=(0,0))
 
-popt2, pcov2 = curve_fit(func, frequencies, wavelengths, 
+popt2, pcov2 = curve_fit(func1, frequencies, wavelengths, 
                          sigma=wavelength_errors)
-ax2.plot(frequencies, func(frequencies, *popt2), label='linear fit')
+ax2.plot(frequencies, func1(frequencies, *popt2), label='linear fit')
 print(popt2)
 print(np.sqrt(np.diag(pcov2)))
 ax2.legend()
