@@ -17,6 +17,8 @@ def func(x, a, b):
     """y = 1/a * x + b"""
     return 1/a * x + b
 
+def funcy(x, a):
+    return a/x
 
 # Input data
 wavelengths = np.array([4.9, 4.8, 4.8, 4.6, 4.5]) * 10**(-2) / 5 # In centimetres -> m
@@ -54,9 +56,9 @@ ax2.set_xlabel('Frequency $f$ [Hz]')
 ax2.set_ylabel('wavelength $\\lambda$ [m]')
 ax2.ticklabel_format(axis='both', scilimits=(0,0))
 
-popt2, pcov2 = curve_fit(func1, frequencies, wavelengths, 
+popt2, pcov2 = curve_fit(funcy, frequencies, wavelengths, 
                          sigma=wavelength_errors)
-ax2.plot(frequencies, func1(frequencies, *popt2), label='linear fit')
+ax2.plot(frequencies, funcy(frequencies, *popt2), label='linear fit')
 print(popt2)
 print(np.sqrt(np.diag(pcov2)))
 ax2.legend()
