@@ -9,17 +9,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
+def func1(x, a, b):
+    """y = a * x + b"""
+    return a * x + b
 
-def func(x, a):
-    """y = 1/a * x"""
-    return 1/a * x
+def func(x, a, b):
+    """y = 1/a * x + b"""
+    return 1/a * x + b
 
 
 # Input data
-wavelengths = np.array([0.6, 0.5, 0.6, 0.5, 0.6]) * 10**(-2) * 2 # In centimetres
-wavelength_errors = np.array([0.1, 0.1, 0.1, 0.1, 0.1]) * 10**(-2) # In centimetres
-frequencies = np.array([39, 39.5, 40, 40.5, 41]) * 10**(3) # In killohertz
-frequency_errors = np.zeros(np.shape(frequencies[0])) * 10**(3) # In killohertz
+wavelengths = np.array([4.9, 4.8, 4.8, 4.6, 4.5]) * 10**(-2) / 5 # In centimetres -> m
+wavelength_errors = np.array([0.1, 0.1, 0.1, 0.1, 0.1]) * 10**(-2) / 5 # In centimetres -> m
+frequencies = np.array([39, 39.5, 40, 40.5, 41]) * 10**(3) # In killohertz -> Hz
+frequency_errors = np.zeros(np.shape(frequencies[0])) * 10**(3) # In killohertz -> Hz
 
 # Calculate velocity
 velocities = wavelengths * frequencies
@@ -35,8 +38,8 @@ ax.set_xlabel('Frequency $f$ [Hz]')
 ax.set_ylabel('Velocity $v$ [m/s]')
 ax.ticklabel_format(axis='x', scilimits=(0,0))
 
-popt, pcov = curve_fit(func, frequencies, velocities, sigma=velocity_errors)
-ax.plot(frequencies, func(frequencies, *popt), label='linear fit')
+popt, pcov = curve_fit(func1, frequencies, velocities, sigma=velocity_errors)
+ax.plot(frequencies, func1(frequencies, *popt), label='linear fit')
 print(popt)
 print(np.sqrt(np.diag(pcov)))
 ax.legend()
