@@ -56,3 +56,7 @@ ax.legend()
 fig.show()
 fig.savefig(filenamebase + '.pdf')
 fig.savefig(filenamebase + '.png')
+
+np.savetxt(filenamebase + f'_mean_fourier.csv', 
+           np.c_[mean_fourier, std_fourier],
+           header='# Mean Fourier, std fourier')
