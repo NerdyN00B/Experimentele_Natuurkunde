@@ -7,53 +7,38 @@ Code used for analysis in EN4
 import numpy as np
 import matplotlib.pyplot as plt
 
-basefile = 'nulmeting'
-basefile += '_mean_fourier.csv'
-board_1_file = '1board'
-board_1_file += '_mean_fourier.csv'
+zerofile = 'nulmeting'
+zerofile += '_mean_fourier.csv'
+boardfiles = ['1board', '2boards', '3boards', '4boards', '5boards', '6boards',
+            '7boards', '8boards', '9boards', '10boards', '11boards',
+            '12boards']
 
-
-binsize = 100
-
-freq, base, std_base = np.loadtxt(basefile, unpack=True)
-freq, board_1, std_board_1 = np.loadtxt(board_1_file, unpack=True)
-
-
-# Quick data manipulation to bin it
-binned_freq = np.reshape(freq, [int(freq.size/binsize), binsize])
-freq = np.mean(binned_freq, axis=1)
-
-binned_base = np.reshape(base, [int(freq.size), binsize])
-base = np.mean(binned_base, axis=1)
-
-binned_std_base = np.reshape(std_base, [int(freq.size), binsize])
-std_base = np.linalg.norm(binned_std_base, axis=1)
-
-binned_board_1 = np.reshape(board_1, [int(freq.size), binsize])
-board_1 = np.mean(binned_board_1, axis=1)
-
-binned_std_board_1 = np.reshape(std_board_1, [int(freq.size), binsize])
-std_board_1 = np.linalg.norm(binned_std_board_1, axis=1)
-
-
-
-damping = 1 - board_1/base
-
-std_damping = np.sqrt((std_base/base)**2 + ((std_board_1*board_1)/base**2)**2)
+freq, zero, std_zero = np.loadtxt(zerofile, unpack=True)
 
 fig, ax = plt.subplots(dpi=300)
-
 ax.set_xscale('log')
+
+
+for boardname in boardfiles:
+    boardfile = boardname + '_mean_fourier.csv'
+    freq, board, std_board = np.loadtxt(boardfile, unpack=True)
+
+    damping = 1 - (board/zero)
+    ax.plot(freq, damping, linewidth=0.5, label=f'$\\alpha$ {boardname}')
+
+# std_damping = np.sqrt((std_base/base)**2 + ((std_board_1*board_1)/base**2)**2)
+
+# ax.fill_between(freq, damping+2*std_damping, damping-2*std_damping,
+#                 color='r', alpha=0.2, label='2$\\sigma$')
+
+
 ax.set_ylim([0, 1])
 
-
-ax.plot(freq, damping, c='k', linewidth=0.5, label='$\\alpha$ 1 board')
-ax.fill_between(freq, damping+2*std_damping, damping-2*std_damping,
-                color='r', alpha=0.2, label='2$\\sigma$')
 
 ax.set_xlabel('frequency $f$ [Hz]')
 ax.set_ylabel('damping $\\alpha$')
 ax.set_title('damping')
-ax.legend()
+ax.legend(ncols=2, fontsize='small')
 
 fig.show()
+fig.savefig('damping_all_BAD.pdf')
