@@ -21,7 +21,7 @@ def func(x, *params):
 
 
 filename = 'measurementname.csv'
-guess = [633, 125, 5, 646, 120, 5]
+guess = [633, 1000, 5, 646, 1000, 5]
 
 pixel, signal = np.loadtxt(filename, delimiter=',', unpack=True)
 
