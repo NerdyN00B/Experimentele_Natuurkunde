@@ -10,18 +10,16 @@ import matplotlib.pyplot as plt
 
 def func(x, *params):
     y = np.zeros_like(x)
-    factor = np.sqrt(2*np.pi)
     for i in range(0, len(params), 3):
         mu = params[i]
         amp = params[i+1]
         sigma = params[i+2]
-        mult = amp / (sigma*factor)
-        y += mult * np.exp( -0.5 * ((x - mu) / sigma)**2)
+        y += amp * np.exp( -0.5 * ((x - mu) / sigma)**2)
     return y
 
 
 filename = 'measurementname.csv'
-guess = [633, 1000, 5, 646, 1000, 5]
+guess = [633, 125, 5, 649, 120, 5]
 
 pixel, signal = np.loadtxt(filename, delimiter=',', unpack=True)
 
@@ -34,7 +32,11 @@ fit = func(pixel, *popt)
 # Plotting
 fig, ax = plt.subplots(dpi=300)
 
-ax.plot(pixel, signal, c='k', linewidth=1)
-ax.plot(pixel, fit, 'r:', linewidth=1)
+ax.plot(pixel, signal, c='k', linewidth=1, label='measurement')
+ax.plot(pixel, fit, 'r:', linewidth=1, label='fit')
+
+ax.set_xlabel('pixel')
+ax.set_ylabel('signal intensity')
+ax.legend()
 
 fig.show()
