@@ -18,15 +18,25 @@ def func(x, *params):
     return y
 
 
-filename = 'measurementname.csv'
-guess = [633, 125, 5, 649, 120, 5]
+filename = 'measurements/'
+measurement = 'Na-D_m-1'
+filename += measurement
+filename += '.csv'
+
+guess = [640, 125, 3, 660, 120, 3]
 
 pixel, signal = np.loadtxt(filename, delimiter=',', unpack=True)
 
 # Fit
 popt, pcov = curve_fit(func, pixel, signal, p0=guess, maxfev=5000)
-print(popt)
-print(np.sqrt(np.diag(pcov)))
+sigmas = np.sqrt(np.diag(pcov))
+print(f'for {measurement}')
+for i in range(0, len(popt), 3):
+    print(f'mu_{i//3} = {popt[i]} with error {sigmas[i]}')
+    print(f'amp_{i//3} = {popt[i+1]} with error {sigmas[i+1]}')
+    print(f'sigma_{i//3} = {popt[i+2]} with error {sigmas[i+2]}\n')
+
+
 fit = func(pixel, *popt)
 
 # Plotting
@@ -37,6 +47,11 @@ ax.plot(pixel, fit, 'r:', linewidth=1, label='fit')
 
 ax.set_xlabel('pixel')
 ax.set_ylabel('signal intensity')
+ax.set_title(measurement)
 ax.legend()
+
+filename.strip('.csv')
+
+fig.savefig(filename+'_fit.pdf')
 
 fig.show()
