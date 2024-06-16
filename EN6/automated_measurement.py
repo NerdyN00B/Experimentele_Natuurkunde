@@ -46,7 +46,7 @@ N = rate*t #total samples
 
 f_start = 1000 #Hz
 f_stop = 100000 #Hz
-steps = 49
+steps = 99
 
 frequencies = np.linspace(f_start, f_stop, steps+1).astype(int)
 
@@ -61,7 +61,7 @@ time_0 = timepackage.time()
 closest_freq = []
 found_fourier = []
 signal_to_noise = []
-for frequency in tqdm(np.flip(frequencies).tolist()):
+for frequency in tqdm(frequencies.tolist()):
     # print(f"measuring at {frequency} Hz")
     data = mydaq.writeread(rate, N, sine(time, frequency=frequency))
     
